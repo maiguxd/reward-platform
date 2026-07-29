@@ -1,0 +1,56 @@
+{% extends "base.html" %}
+{% block title %}Admin - Canjes{% endblock %}
+
+{% block content %}
+<h2><i class="bi bi-gift"></i> Gestionar Canjes</h2>
+<hr>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Tipo</th>
+                <th>Cantidad</th>
+                <th>Puntos</th>
+                <th>Discord</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for redeem in redeems %}
+                <tr>
+                    <td>{{ redeem.id }}</td>
+                    <td>{{ redeem.user.username }}</td>
+                    <td>{{ redeem.reward_type }}</td>
+                    <td>{{ redeem.amount }}</td>
+                    <td>{{ redeem.points_cost }}</td>
+                    <td><small>{{ redeem.discord_contact }}</small></td>
+                    <td>
+                        {% if redeem.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% elif redeem.status == 'completed' %}
+                            <span class="badge bg-success">Completado</span>
+                        {% else %}
+                            <span class="badge bg-danger">Rechazado</span>
+                        {% endif %}
+                    </td>
+                    <td><small>{{ redeem.created_at.strftime('%d/%m/%Y %H:%M') }}</small></td>
+                    <td>
+                        {% if redeem.status == 'pending' %}
+                            <a href="{{ url_for('admin.complete_redeem', redeem_id=redeem.id) }}"
+                               class="btn btn-sm btn-success"
+                               onclick="return confirm('¿Marcar como completado? Asegúrate de haber entregado la recompensa.')">
+                                <i class="bi bi-check2"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

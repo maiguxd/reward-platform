@@ -1,0 +1,61 @@
+{% extends "base.html" %}
+{% block title %}Admin - Verificar Misiones{% endblock %}
+
+{% block content %}
+<h2><i class="bi bi-check-all"></i> Verificar Completaciones</h2>
+<hr>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Misión</th>
+                <th>Prueba</th>
+                <th>Estado</th>
+                <th>Fecha</th>
+                <th>Acción</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for completion in completions %}
+                <tr>
+                    <td>{{ completion.id }}</td>
+                    <td>{{ completion.user.username }}</td>
+                    <td>{{ completion.mission.title }}</td>
+                    <td>
+                        {% if completion.proof_text %}
+                            <small>{{ completion.proof_text[:50] }}{% if completion.proof_text|length > 50 %}...{% endif %}</small>
+                        {% else %}
+                            <em>Sin prueba</em>
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if completion.status == 'pending' %}
+                            <span class="badge bg-warning text-dark">Pendiente</span>
+                        {% elif completion.status == 'approved' %}
+                            <span class="badge bg-success">Aprobada</span>
+                        {% else %}
+                            <span class="badge bg-danger">Rechazada</span>
+                        {% endif %}
+                    </td>
+                    <td><small>{{ completion.completed_at.strftime('%d/%m/%Y %H:%M') }}</small></td>
+                    <td>
+                        {% if completion.status == 'pending' %}
+                            <a href="{{ url_for('admin.approve_completion', completion_id=completion.id) }}"
+                               class="btn btn-sm btn-success">
+                                <i class="bi bi-check2"></i>
+                            </a>
+                            <a href="{{ url_for('admin.reject_completion', completion_id=completion.id) }}"
+                               class="btn btn-sm btn-danger">
+                                <i class="bi bi-x"></i>
+                            </a>
+                        {% endif %}
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endblock %}

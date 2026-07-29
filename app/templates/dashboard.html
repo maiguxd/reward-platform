@@ -1,0 +1,105 @@
+{% extends "base.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-md-4">
+        <div class="card bg-primary text-white shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-coin display-4"></i>
+                <h3>{{ current_user.points }}</h3>
+                <p class="mb-0">Puntos Disponibles</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-success text-white shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-check-circle display-4"></i>
+                <h3>{{ current_user.missions_completed }}</h3>
+                <p class="mb-0">Misiones Completadas</p>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <div class="card bg-info text-white shadow">
+            <div class="card-body text-center">
+                <i class="bi bi-cash-stack display-4"></i>
+                <h3>{{ current_user.total_earned }}</h3>
+                <p class="mb-0">Puntos Ganados</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="d-flex justify-content-between align-items-center mb-3">
+    <h2><i class="bi bi-list-check"></i> Misiones Disponibles</h2>
+    <a href="{{ url_for('main.redeem') }}" class="btn btn-danger">
+        <i class="bi bi-gift"></i> Canjear Puntos
+    </a>
+</div>
+
+<div class="row">
+    {% for mission in missions %}
+        <div class="col-md-6 mb-3">
+            <div class="card h-100 shadow-sm {% if mission.id in completed_ids %}border-success{% elif mission.id in pending_ids %}border-warning{% endif %}">
+                <div class="card-body">
+                    <div class="d-flex justify-content-between">
+                        <h5 class="card-title">{{ mission.title }}</h5>
+                        <span class="badge bg-success fs-6">{{ mission.reward_points }} pts</span>
+                    </div>
+                    <p class="card-text text-muted">{{ mission.description }}</p>
+
+                    {% if mission.id in completed_ids %}
+                        <span class="badge bg-success p-2">
+                            <i class="bi bi-check-circle"></i> Completada
+                        </span>
+                    {% elif mission.id in pending_ids %}
+                        <span class="badge bg-warning text-dark p-2">
+                            <i class="bi bi-hourglass-split"></i> Pendiente de verificación
+                        </span>
+                    {% else %}
+                        <div class="d-flex gap-2">
+                            <a href="{{ mission.link }}" target="_blank" class="btn btn-sm btn-outline-primary">
+                                <i class="bi bi-box-arrow-up-right"></i> Ir a la misión
+                            </a>
+                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#completeModal{{ mission.id }}">
+                                <i class="bi bi-check2"></i> Completé esto
+                            </button>
+                        </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="completeModal{{ mission.id }}" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Completar: {{ mission.title }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                    </div>
+                    <form action="{{ url_for('main.complete_mission', mission_id=mission.id) }}" method="POST">
+                        <div class="modal-body">
+                            <p>¿Completaste la misión? Dejanos algún detalle o prueba (opcional).</p>
+                            <textarea name="proof" class="form-control" rows="3" placeholder="Ej: Pantallazo, nombre de usuario, etc."></textarea>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-success">
+                                <i class="bi bi-check2"></i> Sí, la completé
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    {% else %}
+        <div class="col-12">
+            <div class="alert alert-info text-center">
+                <i class="bi bi-info-circle"></i> No hay misiones disponibles por ahora. Vuelve pronto!
+            </div>
+        </div>
+    {% endfor %}
+</div>
+{% endblock %}
