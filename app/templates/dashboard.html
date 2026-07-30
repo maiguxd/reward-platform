@@ -2,91 +2,83 @@
 {% block title %}Dashboard{% endblock %}
 
 {% block content %}
-<div class="row mb-4">
+<div class="row g-4 mb-5">
     <div class="col-md-4">
-        <div class="card bg-primary text-white shadow">
-            <div class="card-body text-center">
-                <i class="bi bi-coin display-4"></i>
-                <h3>{{ current_user.points }}</h3>
-                <p class="mb-0">Puntos Disponibles</p>
-            </div>
+        <div class="stat-card">
+            <i class="bi bi-coin fs-1" style="color: var(--primary);"></i>
+            <div class="stat-number mt-2">{{ current_user.points }}</div>
+            <p class="text-secondary mb-0">Puntos Disponibles</p>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card bg-success text-white shadow">
-            <div class="card-body text-center">
-                <i class="bi bi-check-circle display-4"></i>
-                <h3>{{ current_user.missions_completed }}</h3>
-                <p class="mb-0">Misiones Completadas</p>
-            </div>
+        <div class="stat-card">
+            <i class="bi bi-check-circle fs-1" style="color: var(--discord);"></i>
+            <div class="stat-number mt-2" style="color: var(--discord);">{{ current_user.missions_completed }}</div>
+            <p class="text-secondary mb-0">Misiones Completadas</p>
         </div>
     </div>
     <div class="col-md-4">
-        <div class="card bg-info text-white shadow">
-            <div class="card-body text-center">
-                <i class="bi bi-cash-stack display-4"></i>
-                <h3>{{ current_user.total_earned }}</h3>
-                <p class="mb-0">Puntos Ganados</p>
-            </div>
+        <div class="stat-card">
+            <i class="bi bi-cash-stack fs-1" style="color: #ffd700;"></i>
+            <div class="stat-number mt-2" style="color: #ffd700;">{{ current_user.total_earned }}</div>
+            <p class="text-secondary mb-0">Puntos Ganados</p>
         </div>
     </div>
 </div>
 
-<div class="d-flex justify-content-between align-items-center mb-3">
-    <h2><i class="bi bi-list-check"></i> Misiones Disponibles</h2>
-    <a href="{{ url_for('main.redeem') }}" class="btn btn-danger">
+<div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
+    <h2 class="section-title mb-0"><i class="bi bi-list-check" style="color: var(--primary);"></i> MISIONES <span class="highlight">DISPONIBLES</span></h2>
+    <a href="{{ url_for('main.redeem') }}" class="btn btn-neon-sm mt-2 mt-md-0">
         <i class="bi bi-gift"></i> Canjear Puntos
     </a>
 </div>
 
-<div class="row">
+<div class="row g-4">
     {% for mission in missions %}
-        <div class="col-md-6 mb-3">
-            <div class="card h-100 shadow-sm {% if mission.id in completed_ids %}border-success{% elif mission.id in pending_ids %}border-warning{% endif %}">
-                <div class="card-body">
-                    <div class="d-flex justify-content-between">
-                        <h5 class="card-title">{{ mission.title }}</h5>
-                        <span class="badge bg-success fs-6">{{ mission.reward_points }} pts</span>
-                    </div>
-                    <p class="card-text text-muted">{{ mission.description }}</p>
-
-                    {% if mission.id in completed_ids %}
-                        <span class="badge bg-success p-2">
-                            <i class="bi bi-check-circle"></i> Completada
-                        </span>
-                    {% elif mission.id in pending_ids %}
-                        <span class="badge bg-warning text-dark p-2">
-                            <i class="bi bi-hourglass-split"></i> Pendiente de verificación
-                        </span>
-                    {% else %}
-                        <div class="d-flex gap-2">
-                            <a href="{{ mission.link }}" target="_blank" class="btn btn-sm btn-outline-primary">
-                                <i class="bi bi-box-arrow-up-right"></i> Ir a la misión
-                            </a>
-                            <button class="btn btn-sm btn-success" data-bs-toggle="modal" data-bs-target="#completeModal{{ mission.id }}">
-                                <i class="bi bi-check2"></i> Completé esto
-                            </button>
-                        </div>
-                    {% endif %}
+        <div class="col-md-6">
+            <div class="mission-card {% if mission.id in completed_ids %}completed{% elif mission.id in pending_ids %}pending{% endif %}">
+                <div class="d-flex justify-content-between align-items-start mb-2">
+                    <h5 class="fw-bold mb-0">{{ mission.title }}</h5>
+                    <span class="badge-neon fs-6">{{ mission.reward_points }} pts</span>
                 </div>
+                <p class="text-secondary small mb-3">{{ mission.description }}</p>
+
+                {% if mission.id in completed_ids %}
+                    <span class="badge-neon">
+                        <i class="bi bi-check-circle"></i> Completada
+                    </span>
+                {% elif mission.id in pending_ids %}
+                    <span class="badge-neon" style="border-color: rgba(255, 193, 7, 0.3); color: #ffc107;">
+                        <i class="bi bi-hourglass-split"></i> Pendiente de verificación
+                    </span>
+                {% else %}
+                    <div class="d-flex flex-wrap gap-2">
+                        <a href="{{ mission.link }}" target="_blank" class="btn btn-outline-neon btn-sm">
+                            <i class="bi bi-box-arrow-up-right"></i> Ir a la misión
+                        </a>
+                        <button class="btn btn-neon-sm btn-sm" data-bs-toggle="modal" data-bs-target="#completeModal{{ mission.id }}">
+                            <i class="bi bi-check2"></i> Completé esto
+                        </button>
+                    </div>
+                {% endif %}
             </div>
         </div>
 
         <div class="modal fade" id="completeModal{{ mission.id }}" tabindex="-1">
             <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">Completar: {{ mission.title }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                <div class="modal-content" style="background: #1a1a2e; border: 1px solid var(--glass-border); border-radius: 16px;">
+                    <div class="modal-header" style="border-bottom: 1px solid var(--glass-border);">
+                        <h5 class="modal-title fw-bold">Completar: {{ mission.title }}</h5>
+                        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                     </div>
                     <form action="{{ url_for('main.complete_mission', mission_id=mission.id) }}" method="POST">
                         <div class="modal-body">
-                            <p>¿Completaste la misión? Dejanos algún detalle o prueba (opcional).</p>
+                            <p class="text-secondary">¿Completaste la misión? Déjanos algún detalle o prueba (opcional).</p>
                             <textarea name="proof" class="form-control" rows="3" placeholder="Ej: Pantallazo, nombre de usuario, etc."></textarea>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-success">
+                        <div class="modal-footer" style="border-top: 1px solid var(--glass-border);">
+                            <button type="button" class="btn btn-outline-neon" data-bs-dismiss="modal">Cancelar</button>
+                            <button type="submit" class="btn btn-neon-sm">
                                 <i class="bi bi-check2"></i> Sí, la completé
                             </button>
                         </div>
@@ -96,8 +88,9 @@
         </div>
     {% else %}
         <div class="col-12">
-            <div class="alert alert-info text-center">
-                <i class="bi bi-info-circle"></i> No hay misiones disponibles por ahora. Vuelve pronto!
+            <div class="glass-card text-center py-5">
+                <i class="bi bi-inbox fs-1 text-secondary"></i>
+                <p class="text-secondary mt-2">No hay misiones disponibles por ahora. Vuelve pronto!</p>
             </div>
         </div>
     {% endfor %}

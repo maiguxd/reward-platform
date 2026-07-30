@@ -2,46 +2,48 @@
 {% block title %}Canjear Puntos{% endblock %}
 
 {% block content %}
-<div class="row justify-content-center">
+<div class="row justify-content-center py-4">
     <div class="col-md-6">
-        <div class="card shadow">
-            <div class="card-body p-4">
-                <h2 class="text-center mb-4"><i class="bi bi-gift text-danger"></i> Canjear Recompensas</h2>
+        <div class="form-glass">
+            <h2 class="text-center mb-4 fw-bold"><i class="bi bi-gift" style="color: var(--primary);"></i> CANJEAR RECOMPENSAS</h2>
 
-                <div class="alert alert-info">
-                    <i class="bi bi-info-circle"></i> Tienes <strong>{{ current_user.points }} puntos</strong> disponibles.
-                    <hr>
-                    <i class="bi bi-discord"></i> Las recompensas se entregan por <strong>Discord</strong>. Únete a nuestro servidor para recibirlas.
+            <div class="glass-card mb-4 text-center py-3">
+                <i class="bi bi-coin fs-1" style="color: var(--primary);"></i>
+                <div class="stat-number">{{ current_user.points }}</div>
+                <p class="text-secondary mb-0">Puntos disponibles</p>
+            </div>
+
+            <div class="alert alert-glass d-flex align-items-center gap-2 py-3 mb-4">
+                <i class="bi bi-discord fs-4" style="color: var(--discord);"></i>
+                <small>Las recompensas se entregan por <strong>Discord</strong>. Únete a nuestro servidor para recibirlas.</small>
+            </div>
+
+            <form method="POST">
+                <div class="mb-3">
+                    <label class="form-label">Tipo de recompensa</label>
+                    <select name="reward_type" class="form-select" required>
+                        <option value="robux">Robux</option>
+                        <option value="giftcard">Gift Card</option>
+                    </select>
                 </div>
 
-                <form method="POST">
-                    <div class="mb-3">
-                        <label class="form-label">Tipo de recompensa</label>
-                        <select name="reward_type" class="form-select" required>
-                            <option value="robux">Robux</option>
-                            <option value="giftcard">Gift Card</option>
-                        </select>
+                <div class="mb-3">
+                    <label class="form-label">Cantidad</label>
+                    <input type="number" name="amount" class="form-control" required min="1" placeholder="Ej: 100">
+                    <div class="form-text text-secondary mt-2">
+                        <small>Robux: 10 puntos = 1 Robux · Gift Card: 100 puntos = $1 USD</small>
                     </div>
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Cantidad</label>
-                        <input type="number" name="amount" class="form-control" required min="1" placeholder="Ej: 100">
-                        <div class="form-text">
-                            <strong>Robux:</strong> 10 puntos = 1 Robux<br>
-                            <strong>Gift Card:</strong> 100 puntos = $1 USD
-                        </div>
-                    </div>
+                <div class="mb-3">
+                    <label class="form-label">Usuario de Discord</label>
+                    <input type="text" name="discord_contact" class="form-control" required placeholder="Ej: usuario#1234">
+                </div>
 
-                    <div class="mb-3">
-                        <label class="form-label">Usuario de Discord</label>
-                        <input type="text" name="discord_contact" class="form-control" required placeholder="Ej: usuario#1234">
-                    </div>
-
-                    <button type="submit" class="btn btn-danger w-100">
-                        <i class="bi bi-send"></i> Solicitar Canje
-                    </button>
-                </form>
-            </div>
+                <button type="submit" class="btn btn-neon w-100">
+                    <i class="bi bi-send"></i> SOLICITAR CANJE
+                </button>
+            </form>
         </div>
     </div>
 </div>

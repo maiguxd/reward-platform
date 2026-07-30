@@ -2,57 +2,145 @@
 {% block title %}Inicio{% endblock %}
 
 {% block content %}
-<div class="text-center py-5">
-    <h1 class="display-4 fw-bold">
-        <i class="bi bi-trophy-fill text-warning"></i>
-        {{ config.SITE_NAME }}
-    </h1>
-    <p class="lead text-muted">Gana puntos completando misiones y cámbialos por Robux y más!</p>
-    <hr class="my-4 w-50 mx-auto">
-
-    <div class="row mt-5 justify-content-center">
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-list-check display-3 text-primary"></i>
-                    <h3 class="card-title mt-3">Completa Misiones</h3>
-                    <p class="card-text">Regístrate en juegos, descarga apps y completa encuestas para ganar puntos.</p>
+<section class="hero-section">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="hero-title mb-4">
+                    JUEGA.<br>
+                    <span class="highlight">GANA ROBUX.</span><br>
+                    Y MÁS.
+                </h1>
+                <p class="hero-subtitle mb-4">
+                    Completa misiones, gana puntos y canjea Robux, Gift Cards y recompensas exclusivas vía Discord. Fácil, rápido y sin trampas.
+                </p>
+                <div class="d-flex flex-wrap gap-3">
+                    {% if current_user.is_authenticated %}
+                        <a href="{{ url_for('main.dashboard') }}" class="btn btn-neon">
+                            <i class="bi bi-currency-dollar"></i> IR AL DASHBOARD
+                        </a>
+                    {% else %}
+                        <a href="{{ url_for('auth.register') }}" class="btn btn-neon">
+                            <i class="bi bi-currency-dollar"></i> COMENZAR A GANAR
+                        </a>
+                    {% endif %}
+                    <a href="{{ config.DISCORD_LINK }}" target="_blank" class="btn btn-discord">
+                        <i class="bi bi-discord"></i> UNIRSE AL DISCORD
+                    </a>
                 </div>
             </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-coin display-3 text-success"></i>
-                    <h3 class="card-title mt-3">Acumula Puntos</h3>
-                    <p class="card-text">Cada misión completada te da puntos que puedes acumular para grandes recompensas.</p>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-4 mb-3">
-            <div class="card h-100 shadow-sm">
-                <div class="card-body text-center">
-                    <i class="bi bi-gift display-3 text-danger"></i>
-                    <h3 class="card-title mt-3">Canjea Recompensas</h3>
-                    <p class="card-text">Cambia tus puntos por Robux, gift cards y más a través de nuestro Discord.</p>
+            <div class="col-lg-6 hero-visual">
+                <div class="hero-ring"></div>
+                <div class="hero-ring"></div>
+                <div class="hero-ring"></div>
+                <div class="hero-floating-card">
+                    <div class="text-center">
+                        <div class="d-flex justify-content-center gap-4 mb-3">
+                            <i class="bi bi-robot fs-1" style="color: var(--primary);"></i>
+                            <i class="bi bi-google-play fs-1" style="color: var(--discord);"></i>
+                            <i class="bi bi-stars fs-1" style="color: #ffd700;"></i>
+                        </div>
+                        <div class="d-flex align-items-center justify-content-center gap-2 mb-2">
+                            <i class="bi bi-arrow-right-short fs-3" style="color: var(--primary);"></i>
+                            <i class="bi bi-coin fs-1" style="color: var(--primary);"></i>
+                            <i class="bi bi-arrow-right-short fs-3" style="color: var(--primary);"></i>
+                            <i class="bi bi-gift fs-1" style="color: var(--primary);"></i>
+                        </div>
+                        <small class="text-secondary">Misiones → Puntos → Recompensas</small>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+</section>
 
-    <div class="mt-5">
-        {% if current_user.is_authenticated %}
-            <a href="{{ url_for('main.dashboard') }}" class="btn btn-lg btn-primary me-2">
-                <i class="bi bi-speedometer2"></i> Ir al Dashboard
-            </a>
-        {% else %}
-            <a href="{{ url_for('auth.register') }}" class="btn btn-lg btn-primary me-2">
-                <i class="bi bi-person-plus"></i> Registrarme Ahora
-            </a>
-            <a href="{{ url_for('auth.login') }}" class="btn btn-lg btn-outline-secondary">
-                <i class="bi bi-box-arrow-in-right"></i> Iniciar Sesión
-            </a>
-        {% endif %}
+<section class="py-5">
+    <div class="container">
+        <h2 class="section-title text-center mb-5">
+            ¿CÓMO <span class="highlight">FUNCIONA?</span>
+        </h2>
+        <div class="row g-4">
+            <div class="col-md-4">
+                <div class="step-panel text-center">
+                    <div class="step-number mx-auto mb-3">1</div>
+                    <h4 class="fw-bold mb-2">ELIGE MISIONES</h4>
+                    <p class="text-secondary">Selecciona entre juegos, apps y encuestas. Hay para todos los gustos.</p>
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <i class="bi bi-controller fs-3" style="color: var(--discord);"></i>
+                        <i class="bi bi-google-play fs-3" style="color: var(--primary);"></i>
+                        <i class="bi bi-steam fs-3" style="color: #1b2838);"></i>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-panel text-center">
+                    <div class="step-number mx-auto mb-3">2</div>
+                    <h4 class="fw-bold mb-2">GANA PUNTOS</h4>
+                    <p class="text-secondary">Cada misión completada te da puntos. Acumula sin límite.</p>
+                    <div class="d-flex justify-content-center align-items-center gap-2 mt-3">
+                        <span class="points-badge fs-4 py-2 px-4">
+                            <i class="bi bi-coin"></i> +005
+                        </span>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="step-panel text-center">
+                    <div class="step-number mx-auto mb-3">3</div>
+                    <h4 class="fw-bold mb-2">CANJEA RECOMPENSAS</h4>
+                    <p class="text-secondary">Cambia tus puntos por Robux y Gift Cards por Discord.</p>
+                    <div class="d-flex justify-content-center gap-2 mt-3">
+                        <i class="bi bi-currency-bitcoin fs-3" style="color: var(--primary);"></i>
+                        <i class="bi bi-plus-circle fs-4 text-secondary"></i>
+                        <i class="bi bi-discord fs-3" style="color: var(--discord);"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-</div>
+</section>
+
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex align-items-center gap-3 mb-3">
+            <h5 class="fw-bold mb-0">LIVE REWARDS FEED</h5>
+            <i class="bi bi-star-fill" style="color: var(--primary); font-size: 0.8rem;"></i>
+        </div>
+        <div class="live-feed">
+            <div class="live-feed-track">
+                <span><span class="highlight-name">User_Z</span> just redeemed <strong>1,000 Robux</strong>!</span>
+                <span><span class="highlight-name">Admin</span> just delivered a <strong>$5 Steam Card</strong> to Juanito!</span>
+                <span><span class="highlight-name">ProGamer22</span> just earned <strong>2,500 points</strong>!</span>
+                <span><span class="highlight-name">DarkKnight</span> just redeemed <strong>500 Robux</strong>!</span>
+                <span><span class="highlight-name">Luna_Star</span> just completed <strong>"Register in Game X"</strong>!</span>
+                <span><span class="highlight-name">User_Z</span> just redeemed <strong>1,000 Robux</strong>!</span>
+                <span><span class="highlight-name">Admin</span> just delivered a <strong>$5 Steam Card</strong> to Juanito!</span>
+                <span><span class="highlight-name">ProGamer22</span> just earned <strong>2,500 points</strong>!</span>
+                <span><span class="highlight-name">DarkKnight</span> just redeemed <strong>500 Robux</strong>!</span>
+                <span><span class="highlight-name">Luna_Star</span> just completed <strong>"Register in Game X"</strong>!</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<section class="py-5 text-center">
+    <div class="container">
+        <div class="glass-card p-5">
+            <h2 class="section-title mb-3">¿LISTO PARA <span class="highlight">GANAR</span>?</h2>
+            <p class="text-secondary mb-4">Únete a RewardHub y empieza a ganar puntos hoy mismo.</p>
+            {% if current_user.is_authenticated %}
+                <a href="{{ url_for('main.dashboard') }}" class="btn btn-neon">
+                    <i class="bi bi-speedometer2"></i> IR AL DASHBOARD
+                </a>
+            {% else %}
+                <a href="{{ url_for('auth.register') }}" class="btn btn-neon me-2">
+                    <i class="bi bi-person-plus"></i> CREAR CUENTA
+                </a>
+                <a href="{{ url_for('auth.login') }}" class="btn btn-outline-neon mt-2 mt-md-0">
+                    <i class="bi bi-box-arrow-in-right"></i> INICIAR SESIÓN
+                </a>
+            {% endif %}
+        </div>
+    </div>
+</section>
 {% endblock %}

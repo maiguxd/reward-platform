@@ -9,16 +9,16 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+    <nav class="navbar-glass navbar navbar-expand-lg">
         <div class="container">
             <a class="navbar-brand" href="{{ url_for('main.index') }}">
-                <i class="bi bi-trophy-fill text-warning"></i> {{ config.SITE_NAME }}
+                <i class="bi bi-trophy-fill"></i> {{ config.SITE_NAME }}
             </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
+                <ul class="navbar-nav ms-auto align-items-lg-center gap-1">
                     {% if current_user.is_authenticated %}
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('main.dashboard') }}">
@@ -37,14 +37,19 @@
                                 </a>
                             </li>
                         {% endif %}
+                        <li class="nav-item mx-2">
+                            <span class="points-badge">
+                                <i class="bi bi-coin"></i> {{ current_user.points }}
+                            </span>
+                        </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="#">
-                                <i class="bi bi-coin"></i> {{ current_user.points }} pts
-                            </a>
+                            <div class="avatar-circle ms-1" title="{{ current_user.username }}">
+                                {{ current_user.username[:2].upper() }}
+                            </div>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" href="{{ url_for('auth.logout') }}">
-                                <i class="bi bi-box-arrow-right"></i> Salir
+                                <i class="bi bi-box-arrow-right"></i>
                             </a>
                         </li>
                     {% else %}
@@ -52,7 +57,9 @@
                             <a class="nav-link" href="{{ url_for('auth.login') }}">Iniciar Sesión</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link" href="{{ url_for('auth.register') }}">Registrarse</a>
+                            <a class="btn btn-neon-sm ms-2" href="{{ url_for('auth.register') }}">
+                                Registrarse
+                            </a>
                         </li>
                     {% endif %}
                 </ul>
@@ -60,26 +67,42 @@
         </div>
     </nav>
 
-    <div class="container mt-4">
-        {% with messages = get_flashed_messages(with_categories=true) %}
-            {% if messages %}
-                {% for category, message in messages %}
-                    <div class="alert alert-{{ category }} alert-dismissible fade show" role="alert">
-                        {{ message }}
-                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                    </div>
-                {% endfor %}
-            {% endif %}
-        {% endwith %}
+    <div class="page-content">
+        <div class="container">
+            {% with messages = get_flashed_messages(with_categories=true) %}
+                {% if messages %}
+                    {% for category, message in messages %}
+                        <div class="alert alert-glass alert-dismissible fade show d-flex align-items-center gap-2 py-3 px-4 mb-4" role="alert">
+                            <i class="bi bi-info-circle flex-shrink-0"></i>
+                            {{ message }}
+                            <button type="button" class="btn-close btn-close-white ms-auto" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+            {% endwith %}
 
-        {% block content %}{% endblock %}
+            {% block content %}{% endblock %}
+        </div>
     </div>
 
-    <footer class="bg-dark text-white text-center py-3 mt-5">
-        <p class="mb-0">&copy; 2024 {{ config.SITE_NAME }}. Todos los derechos reservados.</p>
+    <footer class="glass-footer">
+        <div class="container">
+            <div class="d-flex flex-wrap justify-content-between align-items-center">
+                <div class="d-flex gap-4">
+                    <a href="{{ url_for('main.index') }}" class="text-decoration-none text-secondary">Home</a>
+                    <span class="text-secondary">Links</span>
+                    <span class="text-secondary">Privacy</span>
+                    <span class="text-secondary">Terms</span>
+                </div>
+                <div class="text-secondary mt-2 mt-md-0">
+                    &copy; 2024-2025 {{ config.SITE_NAME }} | Legal Info
+                </div>
+            </div>
+        </div>
     </footer>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="{{ url_for('static', filename='js/particles.js') }}"></script>
     <script src="{{ url_for('static', filename='js/main.js') }}"></script>
 </body>
 </html>

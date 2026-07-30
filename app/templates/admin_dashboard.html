@@ -2,64 +2,55 @@
 {% block title %}Admin Panel{% endblock %}
 
 {% block content %}
-<h2><i class="bi bi-shield-lock text-warning"></i> Panel de Administración</h2>
-<hr>
+<h2 class="section-title mb-4"><i class="bi bi-shield-lock" style="color: var(--primary);"></i> PANEL DE <span class="highlight">ADMIN</span></h2>
 
-<div class="row">
-    <div class="col-md-3 mb-3">
-        <div class="card bg-primary text-white shadow">
-            <div class="card-body text-center">
-                <i class="bi bi-people display-4"></i>
-                <h3>{{ users_count }}</h3>
-                <p class="mb-0">Usuarios</p>
-            </div>
+<div class="row g-4 mb-4">
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="bi bi-people fs-1" style="color: var(--discord);"></i>
+            <div class="stat-number mt-2" style="color: var(--discord);">{{ users_count }}</div>
+            <p class="text-secondary mb-0">Usuarios</p>
         </div>
     </div>
-    <div class="col-md-3 mb-3">
-        <div class="card bg-success text-white shadow">
-            <div class="card-body text-center">
-                <i class="bi bi-list-check display-4"></i>
-                <h3>{{ missions_count }}</h3>
-                <p class="mb-0">Misiones</p>
-            </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="bi bi-list-check fs-1" style="color: var(--primary);"></i>
+            <div class="stat-number mt-2">{{ missions_count }}</div>
+            <p class="text-secondary mb-0">Misiones</p>
         </div>
     </div>
-    <div class="col-md-3 mb-3">
-        <div class="card bg-warning text-dark shadow">
-            <div class="card-body text-center">
-                <i class="bi bi-hourglass-split display-4"></i>
-                <h3>{{ pending_completions }}</h3>
-                <p class="mb-0">Pendientes verificar</p>
-            </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="bi bi-hourglass-split fs-1" style="color: #ffc107;"></i>
+            <div class="stat-number mt-2" style="color: #ffc107;">{{ pending_completions }}</div>
+            <p class="text-secondary mb-0">Pendientes verificar</p>
         </div>
     </div>
-    <div class="col-md-3 mb-3">
-        <div class="card bg-info text-white shadow">
-            <div class="card-body text-center">
-                <i class="bi bi-gift display-4"></i>
-                <h3>{{ pending_redeems }}</h3>
-                <p class="mb-0">Canjes pendientes</p>
-            </div>
+    <div class="col-md-3">
+        <div class="stat-card">
+            <i class="bi bi-gift fs-2" style="color: #ff6b6b;"></i>
+            <div class="stat-number mt-2" style="color: #ff6b6b;">{{ pending_redeems }}</div>
+            <p class="text-secondary mb-0">Canjes pendientes</p>
         </div>
     </div>
 </div>
 
-<div class="list-group mt-4">
-    <a href="{{ url_for('admin.manage_missions') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-plus-circle"></i> Gestionar Misiones</span>
-        <i class="bi bi-chevron-right"></i>
+<div class="list-group" style="background: transparent;">
+    <a href="{{ url_for('admin.manage_missions') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: var(--dark-card); border: 1px solid var(--glass-border); color: var(--text-primary); border-radius: 12px; margin-bottom: 0.5rem;">
+        <span><i class="bi bi-plus-circle" style="color: var(--primary);"></i> Gestionar Misiones</span>
+        <i class="bi bi-chevron-right text-secondary"></i>
     </a>
-    <a href="{{ url_for('admin.manage_completions') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-check-all"></i> Verificar Completaciones</span>
-        <span class="badge bg-warning rounded-pill">{{ pending_completions }}</span>
+    <a href="{{ url_for('admin.manage_completions') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: var(--dark-card); border: 1px solid var(--glass-border); color: var(--text-primary); border-radius: 12px; margin-bottom: 0.5rem;">
+        <span><i class="bi bi-check-all" style="color: var(--primary);"></i> Verificar Completaciones</span>
+        <span class="badge" style="background: #ffc107; color: #000;">{{ pending_completions }}</span>
     </a>
-    <a href="{{ url_for('admin.manage_redeems') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-gift"></i> Gestionar Canjes</span>
-        <span class="badge bg-info rounded-pill">{{ pending_redeems }}</span>
+    <a href="{{ url_for('admin.manage_redeems') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: var(--dark-card); border: 1px solid var(--glass-border); color: var(--text-primary); border-radius: 12px; margin-bottom: 0.5rem;">
+        <span><i class="bi bi-gift" style="color: var(--primary);"></i> Gestionar Canjes</span>
+        <span class="badge" style="background: #0dcaf0; color: #000;">{{ pending_redeems }}</span>
     </a>
-    <a href="{{ url_for('admin.manage_users') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-        <span><i class="bi bi-people"></i> Usuarios</span>
-        <i class="bi bi-chevron-right"></i>
+    <a href="{{ url_for('admin.manage_users') }}" class="list-group-item list-group-item-action d-flex justify-content-between align-items-center" style="background: var(--dark-card); border: 1px solid var(--glass-border); color: var(--text-primary); border-radius: 12px;">
+        <span><i class="bi bi-people" style="color: var(--primary);"></i> Usuarios</span>
+        <i class="bi bi-chevron-right text-secondary"></i>
     </a>
 </div>
 {% endblock %}

@@ -2,11 +2,10 @@
 {% block title %}Admin - Canjes{% endblock %}
 
 {% block content %}
-<h2><i class="bi bi-gift"></i> Gestionar Canjes</h2>
-<hr>
+<h2 class="section-title mb-4"><i class="bi bi-gift" style="color: var(--primary);"></i> GESTIONAR <span class="highlight">CANJES</span></h2>
 
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-neon">
         <thead>
             <tr>
                 <th>ID</th>
@@ -28,21 +27,21 @@
                     <td>{{ redeem.reward_type }}</td>
                     <td>{{ redeem.amount }}</td>
                     <td>{{ redeem.points_cost }}</td>
-                    <td><small>{{ redeem.discord_contact }}</small></td>
+                    <td><small class="text-secondary">{{ redeem.discord_contact }}</small></td>
                     <td>
                         {% if redeem.status == 'pending' %}
-                            <span class="badge bg-warning text-dark">Pendiente</span>
+                            <span class="badge" style="background: #ffc107; color: #000;">Pendiente</span>
                         {% elif redeem.status == 'completed' %}
-                            <span class="badge bg-success">Completado</span>
+                            <span class="badge-neon">Completado</span>
                         {% else %}
-                            <span class="badge bg-danger">Rechazado</span>
+                            <span class="badge" style="background: #dc3545;">Rechazado</span>
                         {% endif %}
                     </td>
-                    <td><small>{{ redeem.created_at.strftime('%d/%m/%Y %H:%M') }}</small></td>
+                    <td><small class="text-secondary">{{ redeem.created_at.strftime('%d/%m/%Y %H:%M') }}</small></td>
                     <td>
                         {% if redeem.status == 'pending' %}
                             <a href="{{ url_for('admin.complete_redeem', redeem_id=redeem.id) }}"
-                               class="btn btn-sm btn-success"
+                               class="btn btn-sm btn-neon-sm"
                                onclick="return confirm('¿Marcar como completado? Asegúrate de haber entregado la recompensa.')">
                                 <i class="bi bi-check2"></i>
                             </a>

@@ -2,51 +2,46 @@
 {% block title %}Admin - Misiones{% endblock %}
 
 {% block content %}
-<h2><i class="bi bi-list-check"></i> Gestionar Misiones</h2>
-<hr>
+<h2 class="section-title mb-4"><i class="bi bi-list-check" style="color: var(--primary);"></i> GESTIONAR <span class="highlight">MISIONES</span></h2>
 
-<div class="card mb-4">
-    <div class="card-header bg-primary text-white">
-        <i class="bi bi-plus-circle"></i> Crear Nueva Misión
-    </div>
-    <div class="card-body">
-        <form method="POST">
-            <div class="row">
-                <div class="col-md-6 mb-3">
-                    <label class="form-label">Título</label>
-                    <input type="text" name="title" class="form-control" required>
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">Puntos de recompensa</label>
-                    <input type="number" name="reward_points" class="form-control" required min="1">
-                </div>
-                <div class="col-md-3 mb-3">
-                    <label class="form-label">Categoría</label>
-                    <input type="text" name="category" class="form-control" placeholder="general">
-                </div>
+<div class="form-glass mb-4">
+    <h5 class="fw-bold mb-3"><i class="bi bi-plus-circle" style="color: var(--primary);"></i> Crear Nueva Misión</h5>
+    <form method="POST">
+        <div class="row">
+            <div class="col-md-6 mb-3">
+                <label class="form-label">Título</label>
+                <input type="text" name="title" class="form-control" required>
             </div>
-            <div class="mb-3">
-                <label class="form-label">Descripción</label>
-                <textarea name="description" class="form-control" rows="2"></textarea>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Puntos de recompensa</label>
+                <input type="number" name="reward_points" class="form-control" required min="1">
             </div>
-            <div class="mb-3">
-                <label class="form-label">Link de la misión</label>
-                <input type="url" name="link" class="form-control" required>
+            <div class="col-md-3 mb-3">
+                <label class="form-label">Categoría</label>
+                <input type="text" name="category" class="form-control" placeholder="general">
             </div>
-            <div class="mb-3">
-                <label class="form-label">URL de imagen (opcional)</label>
-                <input type="url" name="image_url" class="form-control">
-            </div>
-            <button type="submit" class="btn btn-primary">
-                <i class="bi bi-save"></i> Crear Misión
-            </button>
-        </form>
-    </div>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Descripción</label>
+            <textarea name="description" class="form-control" rows="2"></textarea>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">Link de la misión</label>
+            <input type="url" name="link" class="form-control" required>
+        </div>
+        <div class="mb-3">
+            <label class="form-label">URL de imagen (opcional)</label>
+            <input type="url" name="image_url" class="form-control">
+        </div>
+        <button type="submit" class="btn btn-neon-sm">
+            <i class="bi bi-save"></i> Crear Misión
+        </button>
+    </form>
 </div>
 
-<h4>Misiones existentes</h4>
+<h5 class="fw-bold mb-3">Misiones existentes</h5>
 <div class="table-responsive">
-    <table class="table table-striped">
+    <table class="table table-neon">
         <thead>
             <tr>
                 <th>ID</th>
@@ -62,18 +57,19 @@
                 <tr>
                     <td>{{ mission.id }}</td>
                     <td>{{ mission.title }}</td>
-                    <td><span class="badge bg-success">{{ mission.reward_points }}</span></td>
+                    <td><span class="badge-neon">{{ mission.reward_points }}</span></td>
                     <td>{{ mission.category }}</td>
                     <td>
                         {% if mission.is_active %}
-                            <span class="badge bg-success">Si</span>
+                            <span class="badge-neon">Si</span>
                         {% else %}
-                            <span class="badge bg-danger">No</span>
+                            <span class="badge badge-discord">No</span>
                         {% endif %}
                     </td>
                     <td>
                         <a href="{{ url_for('admin.delete_mission', mission_id=mission.id) }}"
-                           class="btn btn-sm btn-danger"
+                           class="btn btn-sm btn-outline-danger"
+                           style="border-radius: 8px;"
                            onclick="return confirm('¿Eliminar esta misión?')">
                             <i class="bi bi-trash"></i>
                         </a>
