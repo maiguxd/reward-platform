@@ -26,6 +26,20 @@
     </div>
 </div>
 
+<div class="glass-card mb-5" style="border: 1px solid var(--glass-border); border-radius: 20px; overflow: hidden;">
+    <div class="p-4 pb-0 d-flex flex-wrap justify-content-between align-items-center gap-2">
+        <h2 class="section-title mb-0"><i class="bi bi-clipboard-data" style="color: var(--primary);"></i> ENCUESTAS <span class="highlight">PARA GANAR PUNTOS</span></h2>
+        <span class="badge-neon fs-6"><i class="bi bi-coin"></i> Gana hasta 100+ pts por encuesta</span>
+    </div>
+    <iframe
+        src="https://offers.cpx-research.com/index.php?app_id=34998&ext_user_id={{ current_user.id }}&username={{ current_user.username }}&subid_1={{ current_user.id }}&subid_2=rewardhub"
+        width="100%"
+        height="2200px"
+        frameBorder="0"
+        style="border: none; background: transparent;"
+        title="Encuestas para ganar puntos"></iframe>
+</div>
+
 <div class="d-flex flex-wrap justify-content-between align-items-center mb-4">
     <h2 class="section-title mb-0"><i class="bi bi-list-check" style="color: var(--primary);"></i> MISIONES <span class="highlight">DISPONIBLES</span></h2>
     <a href="{{ url_for('main.redeem') }}" class="btn btn-neon-sm mt-2 mt-md-0">
