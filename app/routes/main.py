@@ -1,15 +1,44 @@
 from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
 from flask_login import login_required, current_user
 from app import db
+from app.models.user import User
 from app.models.mission import Mission, MissionCompletion
 from app.models.redeem import RedeemRequest
+import logging
 
 bp = Blueprint('main', __name__)
+logger = logging.getLogger(__name__)
 
 
 @bp.route('/')
 def index():
     return render_template('index.html')
+
+
+@bp.route('/callback/cpx', methods=['GET', 'POST'])
+def cpx_callback():
+    data = request.args if request.method == 'GET' else request.form
+    status = data.get('status', '0')
+    trans_id = data.get('trans_id', '')
+    sub_id = data.get('sub_id', '')
+    amount_usd = data.get('amount_usd', '0')
+    offer_id = data.get('offer_id', '')
+
+    logger.info(f'CPX callback received: status={status} trans_id={trans_id} sub_id={sub_id} amount={amount_usd}')
+
+    if status == '1' and sub_id:
+        user = User.query.filter_by(id=int(sub_id)).first()
+        if user:
+            points = int(float(amount_usd) * 100)
+            if points <= 0:
+                points = 50
+            user.points += points
+            user.total_earned += points
+            db.session.commit()
+            logger.info(f'Credited {points} points to user {user.username} from CPX')
+            return 'OK'
+        logger.warning(f'CPX callback: user {sub_id} not found')
+    return 'OK'
 
 
 @bp.route('/dashboard')
