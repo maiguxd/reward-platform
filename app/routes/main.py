@@ -22,7 +22,7 @@ def cpx_callback():
 
     status = data.get('status', '0')
     trans_id = data.get('trans_id', '')
-    sub_id = data.get('sub_id') or data.get('subid_1') or data.get('user_id') or data.get('ext_user_id') or data.get('subid')
+    sub_id = data.get('user_id') or data.get('ext_user_id') or data.get('sub_id') or data.get('subid_1') or data.get('subid')
     amount_usd = data.get('amount_usd') or data.get('amount') or data.get('payout') or '0'
     offer_id = data.get('offer_id', '')
 
@@ -48,7 +48,7 @@ def cpx_callback():
         logger.warning(f'CPX callback: user {sub_id} not found')
         return 'OK'
 
-    if status in ('1', '2', 'success', 'approved', 'complete', 'completed'):
+    if status in ('1', 'success', 'approved', 'complete', 'completed'):
         try:
             points = int(float(amount_usd) * 100)
         except (TypeError, ValueError):
@@ -59,6 +59,16 @@ def cpx_callback():
         user.total_earned += points
         db.session.commit()
         logger.info(f'Credited {points} points to user {user.username} from CPX')
+    elif status == '2':
+        try:
+            points = int(float(amount_usd) * 100)
+        except (TypeError, ValueError):
+            points = 0
+        if points > 0:
+            user.points = max(0, user.points - points)
+            user.total_earned = max(0, user.total_earned - points)
+            db.session.commit()
+            logger.info(f'Reversed {points} points from user {user.username} (fraud reversal)')
     return 'OK'
 
 
