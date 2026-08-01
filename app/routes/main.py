@@ -5,6 +5,7 @@ from app.models.user import User
 from app.models.mission import Mission, MissionCompletion
 from app.models.redeem import RedeemRequest
 import logging
+import os
 
 bp = Blueprint('main', __name__)
 logger = logging.getLogger(__name__)
@@ -18,26 +19,46 @@ def index():
 @bp.route('/callback/cpx', methods=['GET', 'POST'])
 def cpx_callback():
     data = request.args if request.method == 'GET' else request.form
+
     status = data.get('status', '0')
     trans_id = data.get('trans_id', '')
-    sub_id = data.get('sub_id', '')
-    amount_usd = data.get('amount_usd', '0')
+    sub_id = data.get('sub_id') or data.get('subid_1') or data.get('user_id') or data.get('ext_user_id') or data.get('subid')
+    amount_usd = data.get('amount_usd') or data.get('amount') or data.get('payout') or '0'
     offer_id = data.get('offer_id', '')
 
-    logger.info(f'CPX callback received: status={status} trans_id={trans_id} sub_id={sub_id} amount={amount_usd}')
+    logger.info(f'CPX callback received: status={status} trans_id={trans_id} sub_id={sub_id} amount={amount_usd} full={dict(data)}')
 
-    if status == '1' and sub_id:
-        user = User.query.filter_by(id=int(sub_id)).first()
-        if user:
-            points = int(float(amount_usd) * 100)
-            if points <= 0:
-                points = 50
-            user.points += points
-            user.total_earned += points
-            db.session.commit()
-            logger.info(f'Credited {points} points to user {user.username} from CPX')
-            return 'OK'
+    try:
+        with open(os.path.join(os.path.dirname(__file__), '../../cpx_debug.log'), 'a') as f:
+            f.write(f'{dict(data)}\n')
+    except Exception:
+        pass
+
+    if not sub_id:
+        return 'OK'
+
+    try:
+        sub_id = int(sub_id)
+    except (TypeError, ValueError):
+        logger.warning(f'CPX callback: invalid sub_id {sub_id}')
+        return 'OK'
+
+    user = User.query.filter_by(id=sub_id).first()
+    if not user:
         logger.warning(f'CPX callback: user {sub_id} not found')
+        return 'OK'
+
+    if status in ('1', '2', 'success', 'approved', 'complete', 'completed'):
+        try:
+            points = int(float(amount_usd) * 100)
+        except (TypeError, ValueError):
+            points = 0
+        if points <= 0:
+            points = 50
+        user.points += points
+        user.total_earned += points
+        db.session.commit()
+        logger.info(f'Credited {points} points to user {user.username} from CPX')
     return 'OK'
 
 
