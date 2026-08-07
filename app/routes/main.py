@@ -16,6 +16,16 @@ def index():
     return render_template('index.html')
 
 
+@bp.route('/terms')
+def terms():
+    return render_template('terms.html')
+
+
+@bp.route('/privacy')
+def privacy():
+    return render_template('privacy.html')
+
+
 @bp.route('/callback/cpx', methods=['GET', 'POST'])
 def cpx_callback():
     data = request.args if request.method == 'GET' else request.form

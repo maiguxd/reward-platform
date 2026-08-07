@@ -174,9 +174,8 @@ select option { background: #1a1a2e; color: #fff; }
             <div class="d-flex flex-wrap justify-content-between align-items-center">
                 <div class="d-flex gap-4">
                     <a href="{{ url_for('main.index') }}" class="text-decoration-none text-secondary">Home</a>
-                    <span class="text-secondary">Links</span>
-                    <span class="text-secondary">Privacy</span>
-                    <span class="text-secondary">Terms</span>
+                    <a href="{{ url_for('main.privacy') }}" class="text-decoration-none text-secondary">Privacy</a>
+                    <a href="{{ url_for('main.terms') }}" class="text-decoration-none text-secondary">Terms</a>
                 </div>
                 <div class="text-secondary mt-2 mt-md-0">
                     &copy; 2024-2025 {{ config.SITE_NAME }} | Legal Info
